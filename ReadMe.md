@@ -1,4 +1,6 @@
 ### How to run
+1. run sql with MySQL
+
 ```sql
 create database searchdb;  
 use searchdb;  
