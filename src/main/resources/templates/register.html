@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Welcome</title>
+    <link rel="stylesheet" th:href="@{/css/register.css}">
+<!--    <link href="css/register.css" rel="stylesheet">-->
+</head>
+<body>
+
+<div class="form-div">
+    <div class="reg-content">
+        <h1>Welcome</h1>
+        <span>Have account already？</span> <a th:href="@{/user}">Login</a>
+    </div>
+
+    <form th:action="@{/user/save}" id="reg-form" method="post">
+        <table>
+            <tr>
+                <td>username</td>
+                <td class="inputs">
+                    <input name="username" type="text" id="username">
+                    <br>
+<!--                    <span id="username_err" class="err_msg" style="display: none">username format is not right</span>-->
+                </td>
+
+            </tr>
+
+            <tr>
+                <td>password</td>
+                <td class="inputs">
+                    <input name="password" type="password" id="password">
+                    <br>
+<!--                    <span id="password_err" class="err_msg" style="display: none">password format is not right</span>-->
+                </td>
+            </tr>
+
+        </table>
+
+         <p>
+        <label style="color: red" th:text="${register_error_msg}" ></label>
+        </p>
+        <div class="buttons">
+            <input value="Register" type="submit" id="reg_btn">
+        </div>
+        <br class="clear">
+    </form>
+
+</div>
+</body>
+</html>

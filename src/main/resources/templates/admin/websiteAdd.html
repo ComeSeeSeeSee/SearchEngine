@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<header th:replace="admin/header::header-fragment"></header>
+<body class="hold-transition sidebar-mini">
+<div class="wrapper">
+    <!-- insert header-fragment -->
+    <div th:replace="admin/header::header-nav"></div>
+    <!-- insert sidebar-fragment -->
+    <div th:replace="admin/sidebar::sidebar-fragment(${path})"></div>
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <div class="content-header">
+            <div class="container-fluid">
+            </div><!-- /.container-fluid -->
+        </div>
+        <!-- Main content -->
+        <section class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card card-primary card-outline">
+                            <div class="card-header">
+                                <h3 class="card-title">Change password  Save Website</h3>
+                            </div> <!-- /.card-body -->
+                            <div class="card-body">
+
+                                <!-- input states -->
+                                <form th:action="@{/admin/saveWebsite}" id="reg-form" method="post">
+                                    <div class="form-group">
+                                        <label class="control-label"><i class="fa fa-key"></i> Description</label>
+                                        <input type="text" class="form-control" id="description"
+                                               name="description"
+                                               placeholder="Please type the description" required="true">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label"><i class="fa fa-key"></i> URL</label>
+                                        <input type="text" class="form-control" id="url" name="url"
+                                               placeholder="Please type the url" required="true">
+                                    </div>
+
+                                    <div class="buttons">
+                                        <input value="Confirm" type="submit" id="reg_btn">
+                                    </div>
+                                    <br class="clear">
+                                </form>
+                                <a th:href="@{'/admin/goToIndex' }">Quich Search HomePage</a>
+
+
+                            </div><!-- /.card-body -->
+                        </div>
+                    </div>
+
+                </div>
+            </div><!-- /.container-fluid -->
+        </section>
+        <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+    <!-- insert footer-fragment -->
+    <div th:replace="admin/footer::footer-fragment"></div>
+</div>
+<!-- jQuery -->
+<script th:src="@{/admin/plugins/jquery/jquery.min.js}"></script>
+<!-- Bootstrap 4 -->
+<script th:src="@{/admin/plugins/bootstrap/js/bootstrap.bundle.min.js}"></script>
+<!-- AdminLTE App -->
+<script th:src="@{/admin/dist/js/adminlte.min.js}"></script>
+<!-- public.js -->
+<script th:src="@{/admin/dist/js/public.js}"></script>
+
+
+</body>
+</html>
