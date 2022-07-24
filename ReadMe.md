@@ -68,3 +68,4 @@ Search
 - Modifying front end display more user friendly, edit front end searchPage and index 
 - Using aws cloud services and  deploy
 - add bookmark later
+- add more data
