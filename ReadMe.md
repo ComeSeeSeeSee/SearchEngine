@@ -65,10 +65,6 @@ Search
 
 ### Adding more features
 
-- implement elasticsearch 
-   - Using web crawler
-   - Using index
-- Modifying front end display more user friendly
-- Adding user menu so users can edit their account and save bookmarks
-- More Validation
+- Modifying front end display more user friendly, edit front end searchPage and index 
 - Using aws cloud services and  deploy
+- add bookmark later
