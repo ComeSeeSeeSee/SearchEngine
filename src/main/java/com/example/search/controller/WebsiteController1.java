@@ -9,9 +9,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -38,7 +35,9 @@ public class WebsiteController1 {
     }
 
 
-
+    /*
+    Search function method
+     */
     @PostMapping("/getByDescription/{pageNo}")
     public String getByDescriptionPage(@RequestParam("keyword") String description, @PathVariable(value = "pageNo") int pageNo, Model model){
 
@@ -46,31 +45,78 @@ public class WebsiteController1 {
 
         if(description!=null){
             Page<Website> websitesPage = websiteService.findWebsiteByDescriptionIsContaining(description, of);
-            List<Website> content = websitesPage.getContent();
 
-            System.out.println(content);
+            if(websitesPage.hasContent()){
+                List<Website> content = websitesPage.getContent();
 
-            model.addAttribute("desc",description);
+                System.out.println(content);
+
+                model.addAttribute("desc",description);
 //            model.addAttribute("urls",content.get(0).getUrl());
-            desc = description;
+                desc = description;
 
-            model.addAttribute("listEmployees", content);
-            model.addAttribute("currentPage", 0);
-            model.addAttribute("totalPages", websitesPage.getTotalPages());
-            model.addAttribute("totalItems", websitesPage.getTotalElements());
+                model.addAttribute("listEmployees", content);
+                model.addAttribute("currentPage", 0);
+                model.addAttribute("totalPages", websitesPage.getTotalPages());
+                model.addAttribute("totalItems", websitesPage.getTotalElements());
 
-            return "searchPage.html";
+                return "searchPage";
+            }else {
+                return "searchP";
+            }
         }
-        return "index.html";
+
+        return "index";
     }
 
 
-    // display list of employees
+
     @GetMapping("/getByDescription2/{pageNo}")
     public String viewByDescriptionPage(@PathVariable(value = "pageNo") int pageNo, Model model) {
         System.out.println(desc);
         return getByDescriptionPage(desc,pageNo, model);
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+    //save
+//    @RequestMapping(value = "/saveJson", method = RequestMethod.POST)
+    @PostMapping("/save")
+    @ResponseBody
+    public boolean listJsonTry(@RequestBody Website website){
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+        LocalDateTime now = LocalDateTime.now();
+        if(websiteService.save(new Website(website.getDescription(),website.getUrl(), dtf.format(now)))!=null){
+            return true;
+        }
+        //http://localhost:8080/web  but post  and add json date into
+        return false;
+    }
+
+
+    //delte by id
+    @DeleteMapping("/delete/{id}")
+    @ResponseBody
+    public boolean deleteWebsites(@PathVariable Integer id){
+        boolean b = websiteService.deleteById(id);
+        System.out.println(b);
+        // http://localhost:8080/web/2  but delete
+        return b;
+    }
+
+
+
+
 
 
 
@@ -100,7 +146,7 @@ public class WebsiteController1 {
 //
 //            return "searchPage.html";
 //        }
-//        return "index.html";
+//        return "user_index.html";
 //    }
 
 //
@@ -171,57 +217,6 @@ public class WebsiteController1 {
 //    }
 //
 
-
-    //save
-//    @RequestMapping(value = "/saveJson", method = RequestMethod.POST)
-    @PostMapping("/save")
-    @ResponseBody
-    public boolean listJsonTry(@RequestBody Website website){
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-        LocalDateTime now = LocalDateTime.now();
-        if(websiteService.save(new Website(website.getDescription(),website.getUrl(), dtf.format(now)))!=null){
-            return true;
-        }
-        //http://localhost:8080/web  but post  and add json date into
-        return false;
-    }
-
-
-    //delte by id
-    @DeleteMapping("/delete/{id}")
-    @ResponseBody
-    public boolean deleteWebsites(@PathVariable Integer id){
-        boolean b = websiteService.deleteById(id);
-        System.out.println(b);
-        // http://localhost:8080/web/2  but delete
-        return b;
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-    //?????????? does not work.........
-    @GetMapping("/ajaxTry")
-    public void ajaxTry(HttpServletRequest request,HttpServletResponse response) throws IOException {
-
-
-        response.getWriter().write("hello ajax");
-    }
-
-    @GetMapping("/goajax")
-    public String ajaxGo(){
-        System.out.println("here");
-        return "learn/ajaxTry1";
-    }
 
 
 

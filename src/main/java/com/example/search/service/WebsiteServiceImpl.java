@@ -7,6 +7,7 @@ import com.example.search.repository.WebsitePageAndSortRepository;
 import com.example.search.repository.WebsiteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -89,7 +90,8 @@ public class WebsiteServiceImpl implements WebsiteService {
     }
 
     @Override
-    public Page<Website> findAllByPages(Pageable pageable) {
+    public Page<Website> findAllByPages(int pageNo, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
         Page<Website> all = websitePageAndSortRepository.findAll(pageable);
 
         return all;
@@ -100,4 +102,6 @@ public class WebsiteServiceImpl implements WebsiteService {
     public boolean updateById(Integer id){
         return  false;
     }
+
+
 }

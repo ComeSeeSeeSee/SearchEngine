@@ -40,12 +40,26 @@ public class MyMvcConfig  implements WebMvcConfigurer {
     @Autowired
     private AdminLoginInterceptor adminLoginInterceptor;
 
+    @Autowired
+    private UserLoginInterceptor userLoginInterceptor;
+
+    @Override
     public void addInterceptors(InterceptorRegistry registry) {
         // 添加一个拦截器，拦截以/admin为前缀的URL路径（后台登录拦截）
         registry.addInterceptor(adminLoginInterceptor)
                 .addPathPatterns("/admin/**")
                 .excludePathPatterns("/admin/login")
                 .excludePathPatterns("/admin/login1")
+                .excludePathPatterns("/admin/dist/**")
+                .excludePathPatterns("/admin/plugins/**");
+
+        registry.addInterceptor(userLoginInterceptor)
+                .addPathPatterns("/user/**")
+                .excludePathPatterns("/user/login")
+                .excludePathPatterns("/user/loginPost")
+                .excludePathPatterns("/user/register.html")
+                .excludePathPatterns("/user/register")
+                .excludePathPatterns("/user/save")
                 .excludePathPatterns("/admin/dist/**")
                 .excludePathPatterns("/admin/plugins/**");
     }

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<header th:replace="user/header::header-fragment"></header>
+<body class="hold-transition sidebar-mini">
+<div class="wrapper">
+    <!-- insert header-fragment -->
+    <div th:replace="user/header::header-nav"></div>
+    <!-- insert sidebar-fragment -->
+    <div th:replace="user/user_sidebar::sidebar-fragment(${path})"></div>
+<!--     Content Wrapper. Contains page content-->
+
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <div class="content-header">
+            <div class="container-fluid">
+            </div><!-- /.container-fluid -->
+        </div>
+        <!-- Main content -->
+        <div class="content">
+            <div class="card card-primary card-outline">
+                <div class="card-header">
+                    <h3 class="card-title">Home Page</h3>
+                </div> <!-- /.card-body -->
+                <div class="card-body">
+                    <div class="panel panel-default">
+                        <div style="padding: 10px 0 20px 10px;">
+                            <a href="https://github.com/ComeSeeSeeSee/SearchEngine" target="_blank">
+                            </a>
+                            <h3>Group Info</h3>
+                            <ul>
+                                <li>Name：Leiyao Zhang</li>
+                                <li>Name：Ryan Banafshay</li>
+                                <li>Name：Dali  Kang</li>
+                                <li>Name：Michael McClain</li>
+                                <li>Name：Frempomaa Akosua Michelle  </li>
+                            </ul>
+
+                            <div class="reg-content">
+                                <a th:href="@{/web}">HomePage</a>
+                                <br class="clear">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- /.container-fluid -->
+        </div>
+        <!-- /.content -->
+    </div>
+
+
+    <!-- /.content-wrapper -->
+    <!-- insert footer-fragment -->
+</div>
+
+<!-- jQuery -->
+<script th:src="@{/admin/plugins/jquery/jquery.min.js}"></script>
+<!-- Bootstrap 4 -->
+<script th:src="@{/admin/plugins/bootstrap/js/bootstrap.bundle.min.js}"></script>
+<!-- AdminLTE App -->
+<script th:src="@{/admin/dist/js/adminlte.min.js}"></script>
+
+
+</body>
+</html>

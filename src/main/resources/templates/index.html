@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Fast Search</title>
+    <title>Quick Search</title>
     <link rel="stylesheet" th:href="@{/css/index.css}">
 </head>
 <body>
 
 <div class="box">
-<h1>Search</h1>
+<h1>Quick Search</h1>
 
     <div class="searchbox">
         <form action="/web/getByDescription/0" method="post">
@@ -21,11 +21,18 @@
         <br class="clear">
     </div>
 
+    <div class="reg-content">
+        <a th:href="@{/user/index}">User Setting</a>
+        <br class="clear">
+    </div>
+
     <br>
     <div class="reg-content">
         <a th:href="@{/admin/login}">Admin Login</a>
         <br class="clear">
     </div>
+
+
 
 
 

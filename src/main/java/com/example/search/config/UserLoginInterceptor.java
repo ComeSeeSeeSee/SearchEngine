@@ -10,16 +10,16 @@ import javax.servlet.http.HttpServletResponse;
 
 
 @Component
-public class AdminLoginInterceptor implements HandlerInterceptor {
+public class UserLoginInterceptor implements HandlerInterceptor {
 
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object o) throws Exception {
         System.out.println("Enter the interceptor...");
         String uri = request.getRequestURI();
-        if (uri.startsWith("/admin") && null == request.getSession().getAttribute("loginUser")) {
+        if(uri.startsWith("/user") && null == request.getSession().getAttribute("loginUsername")) {
             request.getSession().setAttribute("login_error_msg", "Please Login First");
-            response.sendRedirect(request.getContextPath() + "/admin/login");
+            response.sendRedirect(request.getContextPath() + "/user/login");
             System.out.println("Not logged in, interception successful...");
             return false;
         }

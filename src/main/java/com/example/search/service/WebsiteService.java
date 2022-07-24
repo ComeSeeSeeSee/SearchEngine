@@ -23,10 +23,11 @@ public interface WebsiteService {
     Website findByDescription(String description);
 
 
-
-
-
     Page<Website> findWebsiteByDescriptionIsContaining(String name, Pageable pageable);
 
-    Page<Website> findAllByPages(Pageable pageable);
+    Page<Website> findAllByPages(int pageNo, int pageSize);
+
+
+
+
 }

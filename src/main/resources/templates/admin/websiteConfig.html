@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<header th:replace="admin/header::header-fragment">
+</header>
+<head>
+    <title>Website Management System</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+</head>
+
+
+<style>
+    .ui-jqgrid tr.jqgrow td {
+        white-space: normal !important;
+        height: auto;
+        vertical-align: text-top;
+        padding-top: 2px;
+    }
+</style>
+<body class="hold-transition sidebar-mini">
+<div class="wrapper">
+
+    <div th:replace="admin/header::header-nav"></div>
+
+    <div th:replace="admin/sidebar::sidebar-fragment(${path})"></div>
+
+    <div class="content-wrapper">
+
+        <div class="content-header">
+            <div class="container-fluid">
+            </div><!-- /.container-fluid -->
+        </div>
+        <!-- Main content -->
+        <div class="content">
+            <div class="container-fluid">
+                <div class="card card-primary card-outline">
+                    <div class="card-header">
+                        <h3 class="card-title">Website Configuration</h3>
+                    </div>
+
+
+                    <div class="container my-2">
+
+                        <div class="searchbox">
+                            <form action="/admin/searchWebsite" method="post">
+                                <input type="text" name="keyword" id="keyword">
+                                <input type="submit" class="btn btn-primary btn-sm mb-3" value="Search Website">
+                                <a th:href="@{/admin/addWebsite}" class="btn btn-primary btn-sm mb-3"> Add Website </a>
+                            </form>
+                        </div>
+
+
+                        <table border="1" class="table table-striped table-responsive-md">
+                            <thead>
+                            <tr>
+                                <th>Description</th>
+                                <th>URL</th>
+                                <th>Created Time</th>
+                                <th> Actions </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="website : ${listWebsite}">
+                                <td th:text="${website.description}"></td>
+                                <td th:text="${website.url}"></td>
+                                <td th:text="${website.createTime}"></td>
+<!--                      action to delete or update                -->
+                                <td> <a th:href="@{/admin/showFormForUpdate/{id}(id=${website.id})}" class="btn btn-primary">Update</a>
+                                    <a th:href="@{/admin/deleteWebsite/{id}(id=${website.id})}" class="btn btn-danger">Delete</a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                        <div th:if="${totalPages > 1}">
+                            <div class="row col-sm-10">
+                                <div class="col-sm-2">
+                                    Total Rows: [[${totalItems}]]
+                                </div>
+                                <div class="col-sm-1">
+                    <span th:each="i: ${#numbers.sequence(1, totalPages)}">
+      <a th:if="${currentPage != i}" th:href="@{'/admin/page/' + ${i}}">[[${i}]]</a>
+      <span th:unless="${currentPage != i}">[[${i}]]</span> &nbsp; &nbsp;
+                    </span>
+                                </div>
+                                <div class="col-sm-1">
+                                    <a th:if="${currentPage < totalPages}" th:href="@{'/admin/page/' + ${currentPage + 1}}">Next</a>
+                                    <span th:unless="${currentPage < totalPages}">Next</span>
+                                </div>
+
+                                <div class="col-sm-1">
+                                    <a th:if="${currentPage < totalPages}" th:href="@{'/admin/page/' + ${totalPages}}">Last</a>
+                                    <span th:unless="${currentPage < totalPages}">Last</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+
+
+<!--                    &lt;!&ndash; /.card-body &ndash;&gt;-->
+<!--                    <div class="card-body">-->
+<!--                        <div class="grid-btn">-->
+<!--                            <button class="btn btn-info" onclick="configAdd()"><i-->
+<!--                                    class="fa fa-plus"></i>&nbsp;New-->
+<!--                            </button>-->
+<!--                            <button class="btn btn-info" onclick="configEdit()"><i-->
+<!--                                    class="fa fa-pencil-square-o"></i>&nbsp;Edit-->
+<!--                            </button>-->
+<!--                            <button class="btn btn-danger" onclick="deleteConfig()"><i-->
+<!--                                    class="fa fa-trash-o"></i>&nbsp;Delete-->
+<!--                            </button>-->
+<!--                        </div>-->
+<!--                        <br>-->
+<!--                    </div>-->
+<!--                    &lt;!&ndash; /.card-body &ndash;&gt;-->
+
+
+
+                </div>
+            </div><!-- /.container-fluid -->
+    </div>
+
+</div>
+<!-- jQuery -->
+<script th:src="@{/admin/plugins/jquery/jquery.min.js}"></script>
+<!-- Bootstrap 4 -->
+<script th:src="@{/admin/plugins/bootstrap/js/bootstrap.bundle.min.js}"></script>
+<!-- AdminLTE App -->
+<script th:src="@{/admin/dist/js/adminlte.min.js}"></script>
+<!-- jqgrid -->
+<script th:src="@{/admin/plugins/jqgrid-5.5.2/jquery.jqGrid.min.js}"></script>
+<script th:src="@{/admin/plugins/jqgrid-5.5.2/grid.locale-cn.js}"></script>
+
+<!-- sweetalert -->
+<script th:src="@{/admin/plugins/sweetalert/sweetalert.min.js}"></script>
+<script th:src="@{/admin/dist/js/public.js}"></script>
+<script th:src="@{/admin/dist/js/newbee_mall_index_config.js}"></script>
+</body>
+</html>

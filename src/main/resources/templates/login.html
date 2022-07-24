@@ -21,6 +21,7 @@
         <p>Username:<input id="username" name="username" type="text" ></p>
         <p>Password:<input id="password" name="password" type="password"></p>
         <label style="color: red" th:text="${login_error_msg}" ></label>
+        <label style="color: red" th:text="${session.login_error_msg}" ></label>
         <p>Remember: <input id="remember" name="remember" value="1" type="checkbox"></p>
 
         <div id="subDiv">

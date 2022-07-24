@@ -2,9 +2,9 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <head>
-        <meta charset="ISO-8859-1">
+        <meta charset="UTF-8">
         <title>Title</title>
-<!--        <link type="text/css" rel="stylesheet" href="../static/css/result.css">-->
+        <link type="text/css" rel="stylesheet" href="../static/css/result.css">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     </head>
 </head>
@@ -46,12 +46,12 @@
                     Total Results: [[${totalItems}]]
                 </div>
 
-<!--                <div class="col-sm-1">-->
-<!--                    <span th:each="i: ${#numbers.sequence(1, totalPages)}">-->
-<!--                      <a th:if="${currentPage != i}" th:href="@{'/page/' + ${i}}">[[${i}]]</a>-->
-<!--                      <span th:unless="${currentPage != i}">[[${i}]]</span> &nbsp; &nbsp;-->
-<!--                    </span>-->
-<!--                </div>-->
+                <!--                <div class="col-sm-1">-->
+                <!--                    <span th:each="i: ${#numbers.sequence(1, totalPages)}">-->
+                <!--                      <a th:if="${currentPage != i}" th:href="@{'/page/' + ${i}}">[[${i}]]</a>-->
+                <!--                      <span th:unless="${currentPage != i}">[[${i}]]</span> &nbsp; &nbsp;-->
+                <!--                    </span>-->
+                <!--                </div>-->
 
                 <div class="col-sm-1">
                     <a th:if="${currentPage < totalPages}" th:href="@{'/web/getByDescription2/'  + ${currentPage + 1}  }">Next</a>
@@ -69,15 +69,15 @@
 
 
 
-<!--        <p>-->
-<!--            <label style="color: black" th:text="${desc}" ></label>-->
-<!--            <br>-->
-<!--            <a href="url" th:href="${urls}">-->
-<!--                <label style="color: blue" th:text="${desc}" ></label>-->
-<!--            </a>-->
-<!--            <br>-->
-<!--            <label style="color: black" th:herf="${urls}" ></label>-->
-<!--        </p>-->
+        <!--        <p>-->
+        <!--            <label style="color: black" th:text="${desc}" ></label>-->
+        <!--            <br>-->
+        <!--            <a href="url" th:href="${urls}">-->
+        <!--                <label style="color: blue" th:text="${desc}" ></label>-->
+        <!--            </a>-->
+        <!--            <br>-->
+        <!--            <label style="color: black" th:herf="${urls}" ></label>-->
+        <!--        </p>-->
     </div>
 </div>
 
@@ -138,6 +138,36 @@
 
 
 <!--</div>-->
+
+
+
+
+
+
+
+</body>
+</html><!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <head>
+        <meta charset="UTF-8">
+        <title>Title</title>
+        <link type="text/css" rel="stylesheet" href="../static/css/result.css">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    </head>
+</head>
+<body>
+
+<div class="result_search">
+
+
+    <h5>Nothing found!</h5>
+
+
+</div>
+
+<br>
+
 
 
 

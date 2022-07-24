@@ -6,15 +6,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Controller
@@ -22,7 +22,7 @@ import java.util.List;
 public class UserController {
 
     @Autowired
-    private UserService service;
+    private UserService userService;
 
 
     @GetMapping({"","/","/login"})
@@ -32,10 +32,17 @@ public class UserController {
 
     @PostMapping("/loginPost")
     public String login(@RequestParam("username") String name, @RequestParam("password") String password,
-                        HttpServletRequest request, HttpServletResponse response, Model model){
+                        HttpServletRequest request, HttpServletResponse response, Model model, HttpSession session){
+        User byNameAndPassword = userService.findByNameAndPassword(name, password);
+        if(byNameAndPassword==null){
+            model.addAttribute("login_error_msg","Username or password incorrect");
+            return "login";
+        }
+
 
         String remember = request.getParameter("remember");
         if("1".equals(remember)){
+
             //send cookie if checked
             Cookie cUsername = new Cookie("username",name);
             Cookie cPassword = new Cookie("password", password);
@@ -47,9 +54,14 @@ public class UserController {
             response.addCookie(cPassword);
         }
 
-        User byNameAndPassword = service.findByNameAndPassword(name, password);
-//        log.info(byNameAndPassword.toString());
 
+
+
+        session.setAttribute("loginUsername",byNameAndPassword.getId());
+        session.setAttribute("loginUserId",byNameAndPassword.getId());
+
+
+        System.out.println("session stored!!!!!!");
         if(byNameAndPassword!=null){
             return "/index";
         }else {
@@ -70,16 +82,16 @@ public class UserController {
     @PostMapping("/save")
     public String saveUser(@RequestParam("username") String name, @RequestParam("password")String password,Model model){
 
-        User distinctByName = service.findDistinctByName(name);
+        User distinctByName = userService.findDistinctByName(name);
 
         if (distinctByName==null){
             User user = new User();
             user.setName(name);
             user.setPassword(password);
-            service.save(user);
+            userService.save(user);
 
             log.info(name + " saved");
-            List<User> all = service.findAll();
+            List<User> all = userService.findAll();
             all.forEach(System.out::println);
             return "login";
         }
@@ -89,6 +101,80 @@ public class UserController {
         System.out.println("exists, please try again");
         return "register";
     }
+
+
+    /*
+    User management
+     */
+    @GetMapping({"/index", "/index.html"})
+    public String index(HttpServletRequest request) {
+        request.setAttribute("path", "index");
+        return "user/user_index";
+    }
+
+    @GetMapping("/bookmark")
+    public String bookmark(){
+        return "user/bookmark";
+    }
+
+    @GetMapping("/profile")
+    public String profile(HttpServletRequest request, Model model){
+        int loginUserId = (Integer)request.getSession().getAttribute("loginUsername");
+        Optional<User> byId = userService.findById(loginUserId);
+        User user = byId.get();
+
+        System.out.println("inside profile");
+
+        System.out.println(user);
+        if (user == null) {
+            return indexLogin();
+        }
+
+        request.setAttribute("path", "profile");
+        request.setAttribute("username", user.getName());
+
+
+        return "user/user_profile";
+    }
+
+    @PostMapping("/profile/password")
+    @ResponseBody
+    public String passwordUpdate(HttpServletRequest request, @RequestParam("originalPassword") String originalPassword,
+                                 @RequestParam("newPassword") String newPassword) {
+        if (!(StringUtils.hasLength(originalPassword) || StringUtils.hasLength(newPassword))) {
+            return "Cannot be empty";
+        }
+        Integer loginUserId = (int) request.getSession().getAttribute("loginUserId");
+        System.out.println(loginUserId);
+        System.out.println(newPassword);
+        System.out.println(originalPassword);
+
+
+        if(userService.updatePasswordById(newPassword,loginUserId,originalPassword)){
+
+            request.getSession().removeAttribute("loginUserId");
+            request.getSession().removeAttribute("loginUser");
+            request.getSession().removeAttribute("errorMsg");
+            indexLogin();
+            return "success";
+        }else {
+            return "Failed";
+        }
+    }
+
+
+
+
+    @GetMapping("/logout")
+    public String logout(HttpServletRequest request) {
+        request.getSession().removeAttribute("loginUserId");
+        request.getSession().removeAttribute("loginUser");
+        request.getSession().removeAttribute("errorMsg");
+        return "login";
+    }
+
+
+
 
 
 

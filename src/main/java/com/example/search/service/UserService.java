@@ -28,4 +28,6 @@ public interface UserService {
 
     User findByNameAndPassword(String name, String password);
 
+    Boolean updatePasswordById(String newPassword, Integer id, String oldPassword);
+
 }

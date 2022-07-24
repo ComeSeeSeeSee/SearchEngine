@@ -7,6 +7,9 @@ import com.example.search.entity.Website;
 import com.example.search.service.AdminService;
 import com.example.search.service.WebsiteService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -16,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 
 @Controller
@@ -138,6 +142,16 @@ public class AdminController {
     }
 
 
+    /*
+    website part
+     */
+
+
+
+    @Autowired
+    private WebsiteService websiteService;
+
+
 
     @GetMapping("/addWebsite")
     public String addWebsite(){
@@ -145,12 +159,12 @@ public class AdminController {
     }
 
 
-    @Autowired
-    private WebsiteService websiteService;
+
 
 
     @PostMapping("/saveWebsite")
-    public String saveWebsite(@RequestParam("description")String description,@RequestParam("url") String url){
+    public String saveWebsite(@RequestParam("description")String description,@RequestParam("url") String url,Model model){
+
 
         Website website = new Website();
 
@@ -171,6 +185,78 @@ public class AdminController {
 
         return "admin/websiteAdd";
     }
+    @GetMapping("/webistesConfig")
+    public String websiteAll(Model model){
+//        return "admin/websiteConfig";
+        return findPaginated(1, model);
+    }
+
+
+    @PostMapping("/searchWebsite")
+    public String searchWebsite(Model model,@RequestParam("keyword")String description){
+        //fake search, add it later
+        model.addAttribute("description",description);
+        return findPaginated(1,model);
+    }
+
+
+    @GetMapping("/page/{pageNo}")
+    public String findPaginated(@PathVariable(value = "pageNo") int pageNo, Model model) {
+
+        int pageSize = 10;
+
+        String description =(String)model.getAttribute("description");
+
+        System.out.println(description);
+
+        if(description!=null){
+            Pageable pageable = PageRequest.of(pageNo-1,pageSize);
+            Page<Website> page = websiteService.findWebsiteByDescriptionIsContaining(description, pageable);
+            List<Website> websiteList = page.getContent();
+
+            model.addAttribute("currentPage", pageNo);
+            model.addAttribute("totalPages", page.getTotalPages());
+            model.addAttribute("totalItems", page.getTotalElements());
+            model.addAttribute("listWebsite", websiteList);
+            return "admin/websiteConfig";
+        }
+
+        Page<Website> page = websiteService.findAllByPages(pageNo,pageSize);
+        List<Website> websiteList = page.getContent();
+
+        model.addAttribute("currentPage", pageNo);
+        model.addAttribute("totalPages", page.getTotalPages());
+        model.addAttribute("totalItems", page.getTotalElements());
+        model.addAttribute("listWebsite", websiteList);
+        return "admin/websiteConfig";
+
+    }
+
+
+
+    @GetMapping("/showFormForUpdate/{id}")
+    public String showFormForUpdate(@PathVariable(value = "id") int id, Model model) {
+        Website website = websiteService.findById(id);
+        model.addAttribute("url",website.getUrl());
+        model.addAttribute("description",website.getDescription());
+
+        return "admin/updateWebiste";
+    }
+
+    @GetMapping("/deleteWebsite/{id}")
+    public String deleteEmployee(@PathVariable(value = "id") int id, Model model) {
+
+        boolean b = websiteService.deleteById(id);
+        System.out.println(b);
+
+        return findPaginated(1, model);
+    }
+
+
+
+
+
+
 
     @GetMapping("/goToIndex")
     public String gotoIndex(){

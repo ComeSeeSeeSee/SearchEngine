@@ -84,4 +84,15 @@ public class UserServiceImpl implements UserService{
         return null;
 
     }
+
+    @Override
+    public Boolean updatePasswordById(String newPassword, Integer id, String oldPassword) {
+
+        int i = userRepository.updatePasswordByPasswordAndId(newPassword,oldPassword,id);
+
+        if(i>0){
+            return true;
+        }
+        return false;
+    }
 }
